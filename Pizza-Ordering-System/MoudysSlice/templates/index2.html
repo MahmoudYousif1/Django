@@ -1,0 +1,125 @@
+{% extends "base2.html" %} 
+{% load static %} 
+{% block extrastyle %}
+<style>
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  .home-section {
+    position: relative;
+    height: 100vh;
+    width: 100%;
+    background: url('{% static "img1.jpg" %}') no-repeat center center;
+    background-size: cover;
+    background-attachment: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    text-transform: uppercase;
+  }
+  .home-section:before {
+    content: "";
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1;
+  }
+
+  .home-section > div {
+    position: relative;
+    z-index: 2;
+  }
+  .home-section h1 {
+    color: white;
+    font-size: 8rem;
+    margin-bottom: 0.5rem;
+  }
+  .btn-order-now {
+    font-size: 1.5em;
+    padding: 0.75em 1.5em;
+    color: white;
+    background-color: #007bff;
+    border-color: #007bff;
+    text-shadow: none;
+  }
+
+  .btn-order-now {
+    position: relative;
+    z-index: 2;
+  }
+</style>
+
+{% endblock %} {% block content %}
+<div class="home-section">
+  <div>
+    <h1>The Flamin Grill</h1>
+    <a class="btn btn-primary btn-order-now" href="{% url 'order' %}"
+      >Order Now</a
+    >
+    <a class="btn btn-primary btn-order-now" href="#yourorders"
+      >Previous Orders</a
+    >
+  </div>
+</div>
+
+<div class="container my-5">
+  <h2 class="text-center mb-4" id="yourorders">Your Orders</h2>
+  {% for order in orders %}
+  <div class="card mb-4 shadow">
+    <div class="card-header bg-primary text-white">
+      <h5 class="my-0">
+        Order placed on: {{ order.order_time | date:"M d, Y H:i" }}
+      </h5>
+    </div>
+    <div class="card-body">
+      <p class="card-text">
+        <strong>Name:</strong> {{ order.delivery.first.name }}
+      </p>
+      <p class="card-text">
+        <strong>Address:</strong> {{ order.delivery.first.address }}
+      </p>
+      <p class="card-text"><strong>Size:</strong> {{ order.size.name }}</p>
+      <p class="card-text"><strong>Crust:</strong> {{ order.crust.name }}</p>
+      <p class="card-text"><strong>Sauce:</strong> {{ order.sauce.name }}</p>
+      <p class="card-text"><strong>Cheese:</strong> {{ order.cheese.name }}</p>
+      <p class="card-text"><strong>Toppings:</strong></p>
+      <ul class="list-group list-group-flush">
+        {% if order.Pepperoni %}
+        <li class="list-group-item">Pepperoni</li>
+        {% endif %} {% if order.Chicken %}
+        <li class="list-group-item">Chicken</li>
+        {% endif %} {% if order.Ham %}
+        <li class="list-group-item">Ham</li>
+        {% endif %} {% if order.Pineapple %}
+        <li class="list-group-item">Pineapple</li>
+        {% endif %} {% if order.Peppers %}
+        <li class="list-group-item">Peppers</li>
+        {% endif %} {% if order.Mushrooms %}
+        <li class="list-group-item">Mushrooms</li>
+        {% endif %} {% if order.Onions %}
+        <li class="list-group-item">Onions</li>
+        {% endif %} {% if order.Sausages %}
+        <li class="list-group-item">Sausages</li>
+        {% endif %} {% if order.Jalapeños %}
+        <li class="list-group-item">Jalapeños</li>
+        {% endif %} {% if order.Pesto %}
+        <li class="list-group-item">Pesto</li>
+        {% endif %} {% for topping in order.toppings.all %}
+        <li class="list-group-item">{{ topping.name }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+  {% empty %}
+  <div class="alert alert-warning text-center" role="alert">
+    You have no orders.
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}

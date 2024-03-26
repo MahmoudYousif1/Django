@@ -1,0 +1,137 @@
+{% extends "base2.html" %}
+
+{% block extrastyle %}
+<style>
+    body {
+        background-color: #fff3e0;
+        color: #5a4320;
+        font-family: 'Comic Sans MS', 'Chalkboard SE', 'Arial', sans-serif;
+    }
+
+    h1, h6 {
+        color: #d35400;
+    }
+
+    .container {
+        background-image: url('background-pizza.jpg');
+        background-size: cover;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .table {
+        background-color: rgba(255, 248, 220, 0.9);
+        color: #6e4a34;
+        border-radius: 8px;
+        overflow: hidden;
+    }
+
+    .table thead th {
+        background-color: #f4d03f;
+        color: #5a4320;
+        font-size: 18px;
+    }
+
+    .table td,
+    .table th {
+        border-color: #ffd699;
+    }
+
+    .table-striped tbody tr:nth-of-type(odd) {
+        background-color: rgba(250, 229, 211, 0.5);
+    }
+
+    .table-hover tbody tr:hover {
+        background-color: rgba(255, 218, 185, 0.75);
+    }
+
+    .expected-delivery {
+        text-align: center;
+        font-weight: bold;
+        font-size: 16px;
+        color: #e67e22;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <h1 class="text-center text-uppercase mb-4">Order Details</h1>
+            <h6 class="text-center text-uppercase mb-4">Thanks for ordering at the Flamin' Grill. Your order will arrive soon.</h6>
+            
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th colspan="2" class="text-center">Delivery Information</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Name</td>
+                            <td>{{ delivery.name }}</td>
+                        </tr>
+                        <tr>
+                            <td>Address</td>
+                            <td>{{ delivery.address }}</td>
+                        </tr>
+                        <tr class="expected-delivery">
+                            <td colspan="2">Expected Delivery: 30-35 minutes after order is placed.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-striped mt-4">
+                    <thead>
+                        <tr>
+                            <th colspan="2" class="text-center">Pizza Information</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Size</td>
+                            <td>{{ order.size.name }}</td>
+                        </tr>
+                        <tr>
+                            <td>Crust</td>
+                            <td>{{ order.crust.name }}</td>
+                        </tr>
+                        <tr>
+                            <td>Sauce</td>
+                            <td>{{ order.sauce.name }}</td>
+                        </tr>
+                        <tr>
+                            <td>Cheese</td>
+                            <td>{{ order.cheese.name }}</td>
+                        </tr>
+                        <tr>
+                            <td>Toppings</td>
+                            <td>
+                                {% for topping in order.toppings.all %}
+                                    {{ topping.name }}{% if not forloop.last %}, {% endif %}
+                                {% empty %}
+                                {% endfor %}
+                                {% if order.Pepperoni %}  Pepperoni{% endif %}
+                                {% if order.Chicken %}   Chicken{% endif %}
+                                {% if order.Ham %}   Ham{% endif %}
+                                {% if order.Pineapple %}   Pineapple{% endif %}
+                                {% if order.Peppers %}   Peppers{% endif %}
+                                {% if order.Mushrooms %}   Mushrooms{% endif %}
+                                {% if order.Onions %}   Onions{% endif %}
+                                {% if order.Sausages %}   Sausages{% endif %}
+                                {% if order.Jalapeños %}   Jalapeños{% endif %}
+                                {% if order.Pesto %}   Pesto{% endif %}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

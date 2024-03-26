@@ -1,0 +1,54 @@
+{% extends "base2.html" %}
+
+{% block content %}
+<style>
+    .topping-check {
+        margin-bottom: 20px;
+    }
+    .topping-heading {
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+
+    .topping-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+        gap: 10px;
+    }
+</style>
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <form method="post" class="form-horizontal">
+                {% csrf_token %}
+                <fieldset>
+                    <h4>Create your pizza</h4>
+                    {% for field in form %}
+                        {% if field.name == "Pepperoni" %}
+                            <h4 class="topping-heading">Choose your Toppings</h4>
+                            <div class="topping-container">
+                        {% endif %}
+                        <div class="form-group {% if field.name in 'Pepperoni,Chicken,Ham,Pineapple,Peppers,Mushrooms,Onions,Sausages,Jalapeños,Pesto' %}topping-check{% endif %}">
+                            <label class="control-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+                            {{ field }}
+                            {% if field.help_text %}
+                                <small class="form-text text-muted">{{ field.help_text }}</small>
+                            {% endif %}
+                            {% for error in field.errors %}
+                                <div class="alert alert-danger">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                        {% if forloop.last %}
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary">Order Pizza</button>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
